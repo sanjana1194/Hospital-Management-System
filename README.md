@@ -6,7 +6,7 @@ A full-stack web application designed to streamline and digitize hospital operat
 
 ## 🌐 Live Demo
 
-> Coming Soon: `http://localhost/index.html`
+> Deployment Video Link: (https://drive.google.com/file/d/1eAbqugXwZ7vnxhurKDOI3PSVjzaWuyfp/view?usp=sharing)
 
 ---
 
