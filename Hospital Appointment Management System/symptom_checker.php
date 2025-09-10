@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["symptom"])) {
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border-radius: 8px;
         }
-        input[type=text], button {
+        input[type=text], button, select {
             padding: 10px;
             margin-top: 10px;
             width: calc(100% - 120px);
@@ -124,9 +124,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["symptom"])) {
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>No doctor found in our hospital for <strong><?= htmlspecialchars($specialization) ?></strong>.</p>
-                    <button onclick="findNearby('<?= $specialization ?>')" class="map-btn">
-                        Find Nearby <?= $specialization ?>
+
+                    <!-- Distance filter -->
+                    <label for="distance">Search nearby hospitals within:</label>
+                    <select id="distance">
+                        <option value="200">200 m</option>
+                        <option value="500">500 m</option>
+                        <option value="1000">1 km</option>
+                        <option value="5000">5 km</option>
+                    </select><br>
+
+                    <!-- Map button -->
+                    <button type="button" onclick="findNearby('<?= $specialization ?>')" class="map-btn">
+                        Find Nearby <?= $specialization ?> Hospitals
                     </button>
+
                     <div id="map"></div>
                 <?php endif; ?>
 
@@ -138,6 +150,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["symptom"])) {
 
     <script>
         function findNearby(specialization) {
+            const radius = document.getElementById("distance").value || 5000; // default 5 km
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const userLocation = {
@@ -158,8 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["symptom"])) {
 
                     const request = {
                         location: userLocation,
-                        radius: 5000,
-                        keyword: specialization + " doctor"
+                        radius: parseInt(radius),
+                        keyword: specialization + " hospital"
                     };
 
                     const service = new google.maps.places.PlacesService(map);
